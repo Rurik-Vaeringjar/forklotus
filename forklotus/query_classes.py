@@ -2,6 +2,11 @@
 
 from .exceptions import *
 
+def split_location(loc: str):
+	if "/" in loc:
+		part = loc.partition("/")
+		return part[2], part[0]
+
 #This is the only one that works right now
 class Riven:
 	_riven_keys = ['unrolled', 'rerolled']
@@ -76,6 +81,7 @@ class Weapon:
 			self.damage = self.Damage(attack_dict['damage'])
 		
 		class Damage:
+			#Can't rely on these keys being present in damage_dict
 			"""_damage_keys = ['impact', 'puncture', 'slash', 'heat', 'cold', 'electric', 'toxin', 
 							'gas', 'viral', 'corrosive', 'blast', 'magnetic', 'radiation', 
 							'true', 'void']"""

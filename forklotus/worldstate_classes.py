@@ -2,7 +2,7 @@
 
 from .exceptions import *
 
-def split_location(loc):
+def split_location(loc: str):
 	if " (" in loc and ")" in loc:
 		part = loc.partition(" (")
 		node = part[0]
@@ -17,6 +17,7 @@ class Fissure:
 					 'enemy', 'tier', 'tierNum', 'expired',
 					 'eta']
 	
+	#Depreciated with recent API change (addition of isStorm bool), kept for reference.
 	"""_void_storms = [["Sover Strait (Earth)", "Iota Temple (Earth)", "Ogal Cluster (Earth)", "Korm's Belt (Earth)", "Bendar Cluster (Earth)", 
 				"Beacon Shield Ring (Venus)", "Vesper Strait (Venus)", "Luckless Expanse (Venus)", "Falling Glory (Venus)", "Bifrost Echo (Venus)", "Orvin-Haarc (Venus)"],
 				["Mordo Cluster (Saturn)", "Lupal Pass (Saturn)", "Nodo Gap (Saturn)", "Vand Cluster (Saturn)", "Kasio's Rest (Saturn)"],
@@ -127,7 +128,7 @@ class VallisInfo:
 			raise DictTypeError('VallisInfo', vallis_dict)
 		for key in self._vallis_keys:
 			if key not in vallis_dict.keys():
-				raise DictKeyError('VallisInfo', key)
+				raise DictKeyError('VallisInfo', key)		
 		self.id = vallis_dict['id']
 		self.expiry = vallis_dict['expiry']
 		self.isWarm = vallis_dict['isWarm']

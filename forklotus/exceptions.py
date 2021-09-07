@@ -1,4 +1,4 @@
-# pylotus/exceptions.py
+# forklotus/exceptions.py
 
 class Error(Exception):
 	'''Base class for exceptions in this module.'''
@@ -13,7 +13,7 @@ class DictTypeError(Error):
 		self.goal_class = goal_class
 		self.dict_obj = dict_obj
 		self.message = '\n ↳ Was expecting an object of type dict that matches the ' 
-		self.message += self.goal_class + ' class, got an object of type '
+		self.message += f"{self.goal_class} class, got an object of type "
 		self.message += str(type(self.dict_obj)) + ' instead.'
 
 class DictKeyError(Error):
@@ -38,7 +38,7 @@ class StatusCodeError(Error):
 	def __init__(self, actual_code, call_name):
 		self.actual_code = actual_code
 		self.call_name = call_name
-		self.message = ' ↳ Warning: response object from API call ' + self.call_name 
+		self.message = f" ↳ Warning: response object from API call {self.call_name}"
 		self.message += ' returned with a status code of ' + str(self.actual_code)
 		self.message += ', not 200. Forwarding response object anyway.'
 

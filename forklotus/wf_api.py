@@ -194,7 +194,7 @@ class wf_api(object):
 		return response.json()
 
 	def get_drop_info(self, item):
-		path = "https://api.warframestat.us/weapons/search/{query}".format(query=item)
+		path = "https://api.warframestat.us/drops/search/{query}".format(query=item)
 		response = session.get(path)
 		if response.status_code != 200:
 			raise StatusCodeError(response.status_code, "get_drop_info")
