@@ -76,6 +76,15 @@ class Invasion:
 		self.vsInfestation = invasion_dict['vsInfestation']
 		self.completion = invasion_dict['completion']
 	
+	def to_string(self):
+		self_string = ""
+		for k, v in vars(self).items():
+			self_string += k + ": " + str(v) + "\n"
+		return self_string
+
+	def get_expected_keys(self):
+		return _invasion_keys
+
 	class Reward:
 		_reward_keys = ['asString', 'countedItems', 'thumbnail']
 
@@ -90,6 +99,15 @@ class Invasion:
 			self.count = reward[0]['count'] if reward else None
 			self.type = reward[0]['type'] if reward else None
 			self.thumbnail = reward_dict['thumbnail']
+
+		def to_string(self):
+			self_string = ""
+			for k, v in vars(self).items():
+				self_string += k + ": " + str(v) + "\n"
+			return self_string
+
+		def get_expected_keys(self):
+			return _reward_keys
 
 class CetusInfo:
 	_cetus_keys = ['id', 'activation', 'isDay','expiry', 
@@ -206,28 +224,25 @@ class VoidTrader:
 	_trader_keys = ['id', 'activation', 'expiry', 'character', 'location', 
 					'inventory', 'psId', 'active', 'startString', 'endString']
 
-	def __init__(self, trader_dic):
-		#Yes, I broke convention calling it trader_dic instead of trader_dict.
-		#The chance to make a stupid dick joke was too tempting to resist.
-		if not isinstance(trader_dic, dict):
-			raise DictTypeError('VoidTrader', trader_dic)
+	def __init__(self, trader_dict):
+		if not isinstance(trader_dict, dict):
+			raise DictTypeError('VoidTrader', trader_dict)
 		for key in self._trader_keys:
-			if key not in trader_dic.keys():
+			if key not in trader_dict.keys():
 				raise DictKeyError('VoidTrader', key)
 		self.id = trader_dic['id']
-		self.activation = trader_dic['activation']
-		self.expiry = trader_dic['expiry']
-		self.character = trader_dic['character']
-		self.location = trader_dic['location']
+		self.activation = trader_dict['activation']
+		self.expiry = trader_dict['expiry']
+		self.character = trader_dict['character']
+		self.location = trader_dict['location']
 		self.relay, self.planet = split_location(self.location)
-		self.psId = trader_dic['psId']
-		self.active = trader_dic['active']
-		self.startString = trader_dic['startString']
-		self.endString = trader_dic['endString']
+		self.psId = trader_dict['psId']
+		self.active = trader_dict['active']
+		self.startString = trader_dict['startString']
+		self.endString = trader_dict['endString']
 		self.inventory = []
 		if trader_dic['inventory']:
-			self.inventory = [self.Item(item) for item in trader_dic['inventory']]
-
+			self.inventory = [self.Item(item) for item in trader_dict['inventory']]
 
 	def to_string(self):
 		self_string = ""
@@ -260,6 +275,7 @@ class VoidTrader:
 		def get_expected_keys(self):
 			return _trader_keys
 
+#WARNING: untested!
 class Sortie:
 	_sortie_keys = ['id', 'activation', 'expiry', 'rewardPool', 'variants', 'boss', 'faction', 'expired', 'eta']
 
@@ -286,7 +302,7 @@ class Sortie:
 		return self_string
 
 	def get_expected_keys(self):
-		return _trader_keys
+		return _sortie_keys
 
 	class Variant:
 		_variant_keys = ['node', 'boss', 'missionType', 'planet', 'modifier', 'modifierDescription']
@@ -304,8 +320,17 @@ class Sortie:
 			self.modifier = variant_dict['modifier']
 			self.modifierDescription = variant_dict['modifierDescription']
 
+		def to_string(self):
+			self_string = ""
+			for k, v in vars(self).items():
+				self_string += k + ": " + str(v) + "\n"
+			return self_string
+
+		def get_expected_keys(self):
+			return _variant_keys
+
 class SteelPath:
-	_steelpath_keys = ['activation', 'expiry', 'currentReward', 'remaining', 'rotation', 'incursions']
+	_steelpath_keys = ['activation', 'expiry', 'currentReward', 'remaining', 'rotation', 'evergreens', 'incursions']
 
 	def __init__(self, steelpath_dict):
 		if not isinstance(steelpath_dict, dict):
@@ -313,14 +338,22 @@ class SteelPath:
 		for key in self._steelpath_keys:
 			if key not in steelpath_dict.keys():
 				raise DictKeyError('SteelPath', key)
-		self.id = steelpath_dict['id'] if 'id' in steelpath_dict.keys() else None
 		self.activation = steelpath_dict['activation']
 		self.expiry = steelpath_dict['expiry']
 		self.currentReward = self.Reward(steelpath_dict['currentReward'])
 		self.remaining = steelpath_dict['remaining']
 		self.rotation = [self.Reward(reward) for reward in steelpath_dict['rotation']]
-		self.evergreen = [self.Reward(reward) for reward in steelpath_dict['evergreen']] if 'evergreen' in steelpath_dict.keys() else []
+		self.evergreen = [self.Reward(reward) for reward in steelpath_dict['evergreens']]
 		#self.incursions = [self.Incursion(incursion) for incursion in steelpath_dict['incursions']]
+	
+	def to_string(self):
+		self_string = ""
+		for k, v in vars(self).items():
+			self_string += k + ": " + str(v) + "\n"
+		return self_string
+
+	def get_expected_keys(self):
+		return _steelpath_keys
 
 	class Reward:
 		_reward_keys = ['name', 'cost']
@@ -333,7 +366,17 @@ class SteelPath:
 					raise DictKeyError('Reward', key)
 			self.name = reward_dict['name']
 			self.cost = reward_dict['cost']
+		
+		def to_string(self):
+			self_string = ""
+			for k, v in vars(self).items():
+				self_string += k + ": " + str(v) + "\n"
+			return self_string
 
+		def get_expected_keys(self):
+			return _reward_keys
+
+	#WARNING: Untested!
 	class Incursion:
 		_incursion_keys = ['id', 'activation', 'expiry']
 
@@ -347,4 +390,11 @@ class SteelPath:
 			self.activation = incursion_dict['activation']
 			self.expiry = incursion_dict['expiry']
 
-				
+		def to_string(self):
+			self_string = ""
+			for k, v in vars(self).items():
+				self_string += k + ": " + str(v) + "\n"
+			return self_string
+
+		def get_expected_keys(self):
+			return _incursion_keys				

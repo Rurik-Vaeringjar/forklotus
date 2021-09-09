@@ -35,7 +35,7 @@ class Riven:
 			self.min = rolled_dict['min']
 			self.max = rolled_dict['max']
 
-#This nonsense doesn't work because the weapon information is a tangled web of madness
+#This nonsense doesn't work because the weapon information is a tangled web of madness, or I'm just very dumb...
 class Weapon:
 	_weapon_keys = ['name', 'description', 'type', 'tradable', 'category', 'wikiaThumbnail', 'masteryReq', 'disposition', 'attacks']
 
