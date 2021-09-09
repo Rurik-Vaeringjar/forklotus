@@ -230,7 +230,7 @@ class VoidTrader:
 		for key in self._trader_keys:
 			if key not in trader_dict.keys():
 				raise DictKeyError('VoidTrader', key)
-		self.id = trader_dic['id']
+		self.id = trader_dict['id']
 		self.activation = trader_dict['activation']
 		self.expiry = trader_dict['expiry']
 		self.character = trader_dict['character']
