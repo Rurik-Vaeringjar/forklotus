@@ -17,7 +17,7 @@ class Fissure:
 					 'enemy', 'tier', 'tierNum', 'expired',
 					 'eta']
 	
-	#Depreciated with recent API change (addition of isStorm bool), kept for reference.
+	#Unused with recent API change (addition of isStorm bool), kept for reference.
 	"""_void_storms = [["Sover Strait (Earth)", "Iota Temple (Earth)", "Ogal Cluster (Earth)", "Korm's Belt (Earth)", "Bendar Cluster (Earth)", 
 				"Beacon Shield Ring (Venus)", "Vesper Strait (Venus)", "Luckless Expanse (Venus)", "Falling Glory (Venus)", "Bifrost Echo (Venus)", "Orvin-Haarc (Venus)"],
 				["Mordo Cluster (Saturn)", "Lupal Pass (Saturn)", "Nodo Gap (Saturn)", "Vand Cluster (Saturn)", "Kasio's Rest (Saturn)"],
@@ -260,3 +260,91 @@ class VoidTrader:
 		def get_expected_keys(self):
 			return _trader_keys
 
+class Sortie:
+	_sortie_keys = ['id', 'activation', 'expiry', 'rewardPool', 'variants', 'boss', 'faction', 'expired', 'eta']
+
+	def __init__(self, sortie_dict):
+		if not isinstance(sortie_dict, dict):
+			raise DictTypeError('Sortie', sortie_dict)
+		for key in self._sortie_keys:
+			if key not in sortie_dict.keys():
+				raise DictKeyError('Sortie', key)
+		self.id = sortie_dict['id']
+		self.activation = sortie_dict['activation']
+		self.expiry = sortie_dict['expiry']
+		self.rewardPool = sortie_dict['rewardPool']
+		self.variants = [self.Variant(variant) for variant in sortie_dict['variants']]
+		self.boss = sortie_dict['boss']
+		self.faction = sortie_dict['faction']
+		self.expired = sortie_dict['expired']
+		self.eta = sortie_dict['eta']
+
+	def to_string(self):
+		self_string = ""
+		for k, v in vars(self).items():
+			self_string += k + ": " + str(v) + "\n"
+		return self_string
+
+	def get_expected_keys(self):
+		return _trader_keys
+
+	class Variant:
+		_variant_keys = ['node', 'boss', 'missionType', 'planet', 'modifier', 'modifierDescription']
+
+		def __init__(self, variant_dict):
+			if not isinstance(variant_dict, dict):
+				raise DictTypeError('Variant', variant_dict)
+			for key in self._variant_keys:
+				if key not in variant_dict.keys():
+					raise DictKeyError('Variant', key)
+			self.node = variant_dict['node']
+			self.planet = variant_dict['planet']
+			self.boss = variant_dict['boss']
+			self.missionType = variant_dict['missionType']
+			self.modifier = variant_dict['modifier']
+			self.modifierDescription = variant_dict['modifierDescription']
+
+class SteelPath:
+	_steelpath_keys = ['activation', 'expiry', 'currentReward', 'remaining', 'rotation', 'incursions']
+
+	def __init__(self, steelpath_dict):
+		if not isinstance(steelpath_dict, dict):
+			raise DictTypeError('SteelPath', steelpath_dict)
+		for key in self._steelpath_keys:
+			if key not in steelpath_dict.keys():
+				raise DictKeyError('SteelPath', key)
+		self.id = steelpath_dict['id'] if 'id' in steelpath_dict.keys() else None
+		self.activation = steelpath_dict['activation']
+		self.expiry = steelpath_dict['expiry']
+		self.currentReward = self.Reward(steelpath_dict['currentReward'])
+		self.remaining = steelpath_dict['remaining']
+		self.rotation = [self.Reward(reward) for reward in steelpath_dict['rotation']]
+		self.evergreen = [self.Reward(reward) for reward in steelpath_dict['evergreen']] if 'evergreen' in steelpath_dict.keys() else []
+		#self.incursions = [self.Incursion(incursion) for incursion in steelpath_dict['incursions']]
+
+	class Reward:
+		_reward_keys = ['name', 'cost']
+
+		def __init__(self, reward_dict):
+			if not isinstance(reward_dict, dict):
+				raise DictTypeError('Reward', reward_dict)
+			for key in self._reward_keys:
+				if key not in reward_dict.keys():
+					raise DictKeyError('Reward', key)
+			self.name = reward_dict['name']
+			self.cost = reward_dict['cost']
+
+	class Incursion:
+		_incursion_keys = ['id', 'activation', 'expiry']
+
+		def __init__(self, incursion_dict):
+			if not isinstance(incursion_dict, dict):
+				raise DictTypeError('Incursion', incursion_dict)
+			for key in self._incursion_keys:
+				if key not in incursion_dict.keys():
+					raise DictKeyError('Incursion', key)
+			self.id = incursion_dict['id']
+			self.activation = incursion_dict['activation']
+			self.expiry = incursion_dict['expiry']
+
+				
