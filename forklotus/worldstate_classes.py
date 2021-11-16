@@ -1,6 +1,7 @@
 # forklotus/worldstate_classes.py
 
 from .exceptions import *
+from pprint import pprint
 
 def split_location(loc: str):
 	if " (" in loc and ")" in loc:
@@ -241,7 +242,7 @@ class VoidTrader:
 		self.startString = trader_dict['startString']
 		self.endString = trader_dict['endString']
 		self.inventory = []
-		if trader_dic['inventory']:
+		if trader_dict['inventory']:
 			self.inventory = [self.Item(item) for item in trader_dict['inventory']]
 
 	def to_string(self):
