@@ -306,7 +306,7 @@ class Sortie:
 		return _sortie_keys
 
 	class Variant:
-		_variant_keys = ['node', 'boss', 'missionType', 'planet', 'modifier', 'modifierDescription']
+		_variant_keys = ['node', 'missionType', 'modifier', 'modifierDescription']
 
 		def __init__(self, variant_dict):
 			if not isinstance(variant_dict, dict):
@@ -314,9 +314,8 @@ class Sortie:
 			for key in self._variant_keys:
 				if key not in variant_dict.keys():
 					raise DictKeyError('Variant', key)
-			self.node = variant_dict['node']
-			self.planet = variant_dict['planet']
-			self.boss = variant_dict['boss']
+			self.mission = variant_dict['node']
+			self.node, self.planet = split_location(self.mission)
 			self.missionType = variant_dict['missionType']
 			self.modifier = variant_dict['modifier']
 			self.modifierDescription = variant_dict['modifierDescription']
@@ -345,6 +344,7 @@ class SteelPath:
 		self.remaining = steelpath_dict['remaining']
 		self.rotation = [self.Reward(reward) for reward in steelpath_dict['rotation']]
 		self.evergreen = [self.Reward(reward) for reward in steelpath_dict['evergreens']]
+		#I have no idea what the hell the incursions in the api actually do, there isn't much information there.
 		#self.incursions = [self.Incursion(incursion) for incursion in steelpath_dict['incursions']]
 	
 	def to_string(self):
@@ -378,24 +378,24 @@ class SteelPath:
 			return _reward_keys
 
 	#WARNING: Untested!
-	class Incursion:
-		_incursion_keys = ['id', 'activation', 'expiry']
-
-		def __init__(self, incursion_dict):
-			if not isinstance(incursion_dict, dict):
-				raise DictTypeError('Incursion', incursion_dict)
-			for key in self._incursion_keys:
-				if key not in incursion_dict.keys():
-					raise DictKeyError('Incursion', key)
-			self.id = incursion_dict['id']
-			self.activation = incursion_dict['activation']
-			self.expiry = incursion_dict['expiry']
-
-		def to_string(self):
-			self_string = ""
-			for k, v in vars(self).items():
-				self_string += k + ": " + str(v) + "\n"
-			return self_string
-
-		def get_expected_keys(self):
-			return _incursion_keys				
+#	class Incursion:
+#		_incursion_keys = ['id', 'activation', 'expiry']
+#
+#		def __init__(self, incursion_dict):
+#			if not isinstance(incursion_dict, dict):
+#				raise DictTypeError('Incursion', incursion_dict)
+#			for key in self._incursion_keys:
+#				if key not in incursion_dict.keys():
+#					raise DictKeyError('Incursion', key)
+#			self.id = incursion_dict['id']
+#			self.activation = incursion_dict['activation']
+#			self.expiry = incursion_dict['expiry']
+#
+#		def to_string(self):
+#			self_string = ""
+#			for k, v in vars(self).items():
+#				self_string += k + ": " + str(v) + "\n"
+#			return self_string
+#
+#		def get_expected_keys(self):
+#			return _incursion_keys				
