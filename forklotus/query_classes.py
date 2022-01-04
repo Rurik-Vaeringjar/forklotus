@@ -8,7 +8,7 @@ def split_location(loc: str):
 		return part[2], part[0]
 
 #This is the only one that works right now
-class Riven:
+class RivenInfo:
 	_riven_keys = ['unrolled', 'rerolled']
 
 	def __init__(self, riven_dict):
@@ -35,9 +35,55 @@ class Riven:
 			self.min = rolled_dict['min']
 			self.max = rolled_dict['max']
 
+# WARNING: UNSTABLE AS ALL HELL
+# This is another jacked up one, api documentation clearly isn't right for this one, going to have to do it manually.
+class WarframeInfo:
+	_warframe_keys = [	'abilities', 'armor', 'components', 'conclave', 'description', 'health', 
+						'imageName', 'introduced', 'masteryReq', 'name', 'passiveDescription', 'patchlogs',
+						'polarities', 'power', 'releaseDate', 'shield', 'sprint', 'sprintSpeed', 'stamina',
+						'uniqueName', 'wikiaThumbnail', 'wikiaUrl']
+
+	def __init__(self, warframe_dict):
+		if not isinstance(warframe_dict, dict):
+			raise DictTypeError('Warframe', warframe_dict)
+		for key in self._warframe_keys:
+			if key not in warframe_dict.keys():
+				raise DictKeyError('Warframe', key)
+		
+		self.abilities = warframe_dict['abilities']
+		self.armor = warframe_dict['armor']
+		#self.buildPrice = warframe_dict['buildPrice']
+		#self.buildQuantity = warframe_dict['buildQuantity']
+		#self.buildTime = warframe_dict['buildTime']
+		#self.category = warframe_dict['category']
+		#self.color = warframe_dict['color']
+		self.components = warframe_dict['components']
+		self.conclave = warframe_dict['conclave']
+		self.description = warframe_dict['description']
+		#self.exalted = warframe_dict['exalted']
+		self.health = warframe_dict['health']
+		self.imageName = warframe_dict['imageName']
+		self.introduced = warframe_dict['introduced']
+		self.masteryReq = warframe_dict['masteryReq']
+		self.name = warframe_dict['name']
+		self.passiveDescription = warframe_dict['passiveDescription']
+		self.patchlogs = warframe_dict['patchlogs']
+		self.polarities = warframe_dict['polarities']
+		self.power = warframe_dict['power']
+		self.releaseDate = warframe_dict['releaseDate']
+		self.shield = warframe_dict['shield']
+		self.sprint = warframe_dict['sprint']
+		self.sprintSpeed = warframe_dict['sprintSpeed']
+		self.stamina = warframe_dict['stamina']
+		self.uniqueName = warframe_dict['uniqueName']
+		self.wikiaThumbnail = warframe_dict['wikiaThumbnail']
+		self.wikiaUrl = warframe_dict['wikiaUrl']
+
+
+
 #WORK IN PROGRESS: Abandon all hope ye who enter here.
 #This nonsense doesn't work because the weapon information is a tangled web of madness, or I'm just very dumb...
-class Weapon:
+class WeaponInfo:
 	_weapon_keys = ['name', 'description', 'type', 'tradable', 'category', 'wikiaThumbnail', 'masteryReq', 'disposition', 'attacks']
 
 	def __init__(self, weapon_dict):
@@ -119,7 +165,7 @@ class Weapon:
 				self.count = pellet_dict['count']
 
 #Doesn't work great yet, mainly because of how many ways the syntax changes in 'place'
-class Drop:
+class DropInfo:
 	_drop_keys = ['item', 'place', 'rarity', 'chance']
 
 	def __init__(self, drop_dict):
