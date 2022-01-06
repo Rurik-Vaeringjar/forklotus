@@ -2,6 +2,8 @@
 
 from .exceptions import *
 
+from pprint import pprint
+
 def split_location(loc: str):
 	if "/" in loc:
 		part = loc.partition("/")
@@ -38,7 +40,7 @@ class RivenInfo:
 # WARNING: UNSTABLE AS ALL HELL
 # This is another jacked up one, api documentation clearly isn't right for this one, going to have to do it manually.
 class WarframeInfo:
-	_warframe_keys = [	'abilities', 'armor', 'components', 'conclave', 'description', 'health', 
+	_warframe_keys = [	'abilities', 'armor', 'components', 'description', 'health', 
 						'imageName', 'introduced', 'masteryReq', 'name', 'passiveDescription', 'patchlogs',
 						'polarities', 'power', 'releaseDate', 'shield', 'sprint', 'sprintSpeed', 'stamina',
 						'uniqueName', 'wikiaThumbnail', 'wikiaUrl']
@@ -50,17 +52,20 @@ class WarframeInfo:
 			if key not in warframe_dict.keys():
 				raise DictKeyError('Warframe', key)
 		
+		#pprint(warframe_dict)
+
 		self.abilities = warframe_dict['abilities']
 		self.armor = warframe_dict['armor']
+		self.aura = warframe_dict['aura'] if 'aura' in warframe_dict.keys() else None
 		#self.buildPrice = warframe_dict['buildPrice']
 		#self.buildQuantity = warframe_dict['buildQuantity']
 		#self.buildTime = warframe_dict['buildTime']
 		#self.category = warframe_dict['category']
 		#self.color = warframe_dict['color']
 		self.components = warframe_dict['components']
-		self.conclave = warframe_dict['conclave']
+		self.conclave = warframe_dict['conclave'] if 'conclave' in warframe_dict.keys() else None
 		self.description = warframe_dict['description']
-		#self.exalted = warframe_dict['exalted']
+		self.exalted = warframe_dict['exalted'] if 'exalted' in warframe_dict.keys() else None
 		self.health = warframe_dict['health']
 		self.imageName = warframe_dict['imageName']
 		self.introduced = warframe_dict['introduced']
