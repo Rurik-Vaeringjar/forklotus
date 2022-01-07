@@ -9,6 +9,58 @@ def split_location(loc: str):
 		part = loc.partition("/")
 		return part[2], part[0]
 
+def fix_thumbnail(name: str) -> str:
+	if name == "Equinox":
+		return "https://static.wikia.nocookie.net/warframe/images/e/ee/EquinoxSolo.png"
+	return None
+
+def fix_passive(passive: str, name: str) -> str:
+	if name.startswith("Ash"):
+		passive = passive.replace("|DAMAGE|", "25")
+		passive = passive.replace("|DURATION|", "50")
+	elif name.startswith("Baruuk"):
+		passive = passive.replace("|PERCENT|", "50")
+	elif name.startswith("Caliban"):
+		passive = passive.replace("|PCT|", "50")
+	elif name.startswith("Ember"):
+		passive = passive.replace("|STRENGTH|", "5")
+		passive = passive.replace("|RANGE|", "50")
+		passive = passive.replace("<DT_FIRE>", "")
+	elif name.startswith("Equinox"):
+		passive = passive.replace("|PERCENT|", "10")
+	elif name.startswith("Excalibur"):
+		passive = passive.replace("|DAMAGE|", "10")
+		passive = passive.replace("|SPEED|", "10")
+	elif name.startswith("Frost"):
+		passive = passive.replace("|CHANCE|", "10")
+		passive = passive.replace("|DURATION|", "20")
+	elif name.startswith("Gara"):
+		passive = passive.replace("lasting |DURATION|s", "within 12m, lasting 10s,")
+	elif name.startswith("Garuda"):
+		passive = passive.replace("|DAMAGE|%.S", "100%. S")
+	elif name.startswith("Gauss"):
+		passive = passive.replace("|SPEED|", "120")
+		passive = passive.replace("|DELAY|", "80")
+	elif name.startswith("Grendel"):
+		passive = passive.replace("|ARMOUR|", "50")
+	elif name.startswith("Harrow"):
+		passive = passive.replace("d.S", "d (maximum 2400) .S")
+	elif name.startswith("Hydroid"):
+		passive = passive.replace("|CHANCE|", "50")
+		passive = passive.replace("|DURATION|", "15")
+	elif name.startswith("Ivara"):
+		passive = passive.replace("|RADIUS|", "20")
+	elif name.startswith("Khora"):
+		passive = passive.replace("|SPEED|", "15")
+		passive = passive.replace("|DURATION|", "45")
+	elif name.startswith("Lavos"):
+		passive = passive.replace("|DURATION|s.H", "10s. H")
+	elif name.startswith("Valkyr"):
+		passive = passive.replace("|PERCENT|", "50")
+
+	return passive
+
+
 #This is the only one that works right now
 class RivenInfo:
 	_riven_keys = ['unrolled', 'rerolled']
@@ -43,18 +95,18 @@ class WarframeInfo:
 	_warframe_keys = [	'abilities', 'armor', 'components', 'description', 'health', 
 						'imageName', 'introduced', 'masteryReq', 'name', 'passiveDescription', 'patchlogs',
 						'polarities', 'power', 'releaseDate', 'shield', 'sprint', 'sprintSpeed', 'stamina',
-						'uniqueName', 'wikiaThumbnail', 'wikiaUrl']
+						'uniqueName', 'wikiaUrl']
 
 	def __init__(self, warframe_dict):
 		if not isinstance(warframe_dict, dict):
-			raise DictTypeError('Warframe', warframe_dict)
+			raise DictTypeError('WarframeInfo', warframe_dict)
 		for key in self._warframe_keys:
 			if key not in warframe_dict.keys():
-				raise DictKeyError('Warframe', key)
+				raise DictKeyError('WarframeInfo', key)
 		
 		#pprint(warframe_dict)
 
-		self.abilities = warframe_dict['abilities']
+		self.abilities = [self.Ability(ability) for ability in warframe_dict['abilities']]
 		self.armor = warframe_dict['armor']
 		self.aura = warframe_dict['aura'] if 'aura' in warframe_dict.keys() else None
 		#self.buildPrice = warframe_dict['buildPrice']
@@ -71,7 +123,7 @@ class WarframeInfo:
 		self.introduced = warframe_dict['introduced']
 		self.masteryReq = warframe_dict['masteryReq']
 		self.name = warframe_dict['name']
-		self.passiveDescription = warframe_dict['passiveDescription']
+		self.passiveDescription = fix_passive(warframe_dict['passiveDescription'], self.name)
 		self.patchlogs = warframe_dict['patchlogs']
 		self.polarities = warframe_dict['polarities']
 		self.power = warframe_dict['power']
@@ -81,8 +133,25 @@ class WarframeInfo:
 		self.sprintSpeed = warframe_dict['sprintSpeed']
 		self.stamina = warframe_dict['stamina']
 		self.uniqueName = warframe_dict['uniqueName']
-		self.wikiaThumbnail = warframe_dict['wikiaThumbnail']
+		if 'wikiaThumbnail' in warframe_dict.keys():
+			self.wikiaThumbnail = warframe_dict['wikiaThumbnail']
+		else:
+			self.wikiaThumbnail = fix_thumbnail(self.name)
 		self.wikiaUrl = warframe_dict['wikiaUrl']
+
+	class Ability:
+		_ability_keys = ['name', 'description']
+
+		def __init__(self, ability_dict):
+			if not isinstance(ability_dict, dict):
+				raise DictTypeError('Ability', ability_dict)
+			for key in self._ability_keys:
+				if key not in ability_dict.keys():
+					raise DictKeyError('Ability', key)
+				
+			self.name = ability_dict['name']
+			self.description = ability_dict['description']
+
 
 
 
