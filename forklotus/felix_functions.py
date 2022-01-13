@@ -95,8 +95,29 @@ def fix_passive(passive: str, name: str) -> str:
 	elif name.startswith("Protea"):
 		passive = passive.replace("|CASTS|", "4")
 		passive = passive.replace("|STRENGTH|", "100")
+	elif name.startswith("Revenant"):
+		passive = passive.replace("|RANGE|", "7.5")
+		passive = passive.replace("|DAMAGE|", "100")
+	elif name.startswith("Rhino"):
+		passive = passive.replace("|DAMAGE| damage", "damage in a 6m radius")
+	elif name.startswith("Saryn"):
+		passive = passive.replace("|DURATION|", "25")
+	elif name.startswith("Trinity"):
+		passive = passive.replace("|SPEED|", "25")
+		passive = passive.replace("|RANGE|", "50")
 	elif name.startswith("Valkyr"):
 		passive = passive.replace("|PERCENT|", "50")
+	elif name.startswith("Vauban"):
+		passive = passive.replace("|DAMAGE|", "25")
+	elif name.startswith("Volt"):
+		passive = passive.replace("|DAMAGE| Damage per meter ", "5 damage per meter, maximum 1000, ")
+	elif name.startswith("Xaku"):
+		passive = passive.replace("|CHANCE|", "25")
+	elif name.startswith("Yareli"):
+		passive = passive.replace("|CHANCE|", "200")
+		passive = passive.replace("|TIME|", "5")
+	elif name.startswith("Zephyr"):
+		passive = passive.replace("|CRIT|", "150")
 
 	return passive
 
@@ -110,10 +131,22 @@ def fix_ability(ability: str, name: str) -> str:
 		ability = ability.replace("<DT_ELECTRICITY>", "")
 	if "<DT_FIRE>" in ability:
 		ability = ability.replace("<DT_FIRE>", "")
+	if "<DT_CORROSIVE>" in ability:
+		ability = ability.replace("<DT_CORROSIVE>", "")
+	if "<DT_VIRAL>" in ability:
+		ability = ability.replace("<DT_VIRAL>", "")
 	#Specific Changes
-	if name == "Grenade Fan":
+	if name == "Magnetize":
+		ability = ability.replace(".(", ".\n(")
+	elif name == "Grenade Fan":
 		ability = ability.replace(".(", ".\n(")
 		ability = ability.replace("XC", "X: C")
 		ability = ability.replace("SP", "S: P")
+	elif name == "Temporal Anchor":
+		ability = ability.replace(".D", ". D")
+	elif (	name == "Ophidian Bite" or name == "Vial Rush" or 
+			name == "Transmutation Probe" or name == "Catalyze"):
+		ability = ability.replace(".H", ". H")
+	
 	
 	return ability
