@@ -3,14 +3,7 @@
 from .exceptions import *
 from pprint import pprint
 
-def split_location(loc: str):
-	if " (" in loc and ")" in loc:
-		part = loc.partition(" (")
-		node = part[0]
-		part = part[2].partition(")")
-		planet = part[0]
-
-	return node, planet
+from .felix_functions import split_location
 
 class Fissure:
 	_fissure_keys = ['id', 'activation', 'startString',
