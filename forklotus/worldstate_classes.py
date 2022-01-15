@@ -121,6 +121,7 @@ class CetusInfo:
 		self.state = cetus_dict['state']
 		self.timeLeft = cetus_dict['timeLeft']
 		self.isCetus = cetus_dict['isCetus']
+		self.wikiaUrl = "https://warframe.fandom.com/wiki/Plains_of_Eidolon"
 
 	def to_string(self):
 		self_string = ''
@@ -145,6 +146,7 @@ class VallisInfo:
 		self.expiry = vallis_dict['expiry']
 		self.isWarm = vallis_dict['isWarm']
 		self.timeLeft = vallis_dict['timeLeft']
+		self.wikiaUrl = "https://warframe.fandom.com/wiki/Orb_Vallis"
 
 	def to_string(self):
 		self_string = ''
@@ -170,6 +172,7 @@ class DeimosInfo:
 		self.activation = deimos_dict["activation"]
 		self.active = deimos_dict["active"]
 		self.isFass = True if self.active == "fass" else False
+		self.wikiaUrl = "https://warframe.fandom.com/wiki/Cambion_Drift"
 
 	def to_string(self):
 		self_string = ""
@@ -237,6 +240,8 @@ class VoidTrader:
 		self.inventory = []
 		if trader_dict['inventory']:
 			self.inventory = [self.Item(item) for item in trader_dict['inventory']]
+		self.wikiaThumbnail = "https://static.wikia.nocookie.net/warframe/images/a/a7/TennoCon2020BaroCropped.png"
+		self.wikiaUrl = "https://warframe.fandom.com/wiki/Baro_Ki\'Teer"
 
 	def to_string(self):
 		self_string = ""
