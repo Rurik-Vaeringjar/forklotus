@@ -9,7 +9,7 @@ class Fissure:
 	_fissure_keys = ['id', 'activation', 'startString',
 					 'expiry', 'active', 'node', 'missionType',
 					 'enemy', 'tier', 'tierNum', 'expired',
-					 'eta']
+					 'eta', 'isStorm']
 	
 	#Unused with recent API change (addition of isStorm bool), kept for reference.
 	"""_void_storms = [["Sover Strait (Earth)", "Iota Temple (Earth)", "Ogal Cluster (Earth)", "Korm's Belt (Earth)", "Bendar Cluster (Earth)", 
@@ -293,6 +293,13 @@ class Sortie:
 		self.faction = sortie_dict['faction']
 		self.expired = sortie_dict['expired']
 		self.eta = sortie_dict['eta']
+		self.wikiaUrl = "https://warframe.fandom.com/wiki/Sortie"
+		self.wikiaThumbnail = self.choose_thumbnail(self.boss)
+
+	def choose_thumbnail(self, boss: str) -> str:
+		if boss == "Councilor Vay Hek":
+			return "https://static.wikia.nocookie.net/warframe/images/8/82/VayHekPortrait.png"
+		return "https://static.wikia.nocookie.net/warframe/images/1/15/Sortie_b.png"
 
 	def to_string(self):
 		self_string = ""
@@ -342,8 +349,14 @@ class SteelPath:
 		self.remaining = steelpath_dict['remaining']
 		self.rotation = [self.Reward(reward) for reward in steelpath_dict['rotation']]
 		self.evergreen = [self.Reward(reward) for reward in steelpath_dict['evergreens']]
+		self.wikiaUrl = "https://warframe.fandom.com/wiki/The_Steel_Path"
+		#REMINDER!! Make a version of this for the wiki from the image they have on the site
+		#Using this genesis link should be temporary.
+		self.wikiaThumbnail = "https://raw.githubusercontent.com/WFCD/genesis-assets/master/img/steelpath.png"
 		#I have no idea what the hell the incursions in the api actually do, there isn't much information there.
 		#self.incursions = [self.Incursion(incursion) for incursion in steelpath_dict['incursions']]
+
+	
 	
 	def to_string(self):
 		self_string = ""
