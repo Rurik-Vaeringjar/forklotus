@@ -2,9 +2,13 @@
 from .exceptions import *
 from .felix_functions import split_location, fix_thumbnail, fix_passive, fix_ability
 
+<<<<<<< HEAD
 from pprint import pprint
 
 #I was wrong, this doesn't work either.
+=======
+#This is the only one that works right now
+>>>>>>> master
 class RivenInfo:
 	_riven_keys = ['unrolled', 'rerolled']
 
