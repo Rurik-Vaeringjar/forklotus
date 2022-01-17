@@ -5,6 +5,15 @@ from pprint import pprint
 
 from .felix_functions import split_location
 
+class Fissures:
+	def __init__(self, fissure_list):
+		if not isinstance(fissure_list, list):
+			raise ListTypeError('Fissures', fissure_list)
+		
+		self.list = [Fissure(fissure) for fissure in fissure_list]
+		self.wikiaThumbnail = "https://static.wikia.nocookie.net/warframe/images/5/57/VoidTearIcon_b.png"
+		self.wikiaUrl = "https://warframe.fandom.com/wiki/Void_Fissure"
+
 class Fissure:
 	_fissure_keys = ['id', 'activation', 'startString',
 					 'expiry', 'active', 'node', 'missionType',
@@ -51,7 +60,7 @@ class Fissure:
 		return _fissure_keys
 
 class Invasion:
-	_invasion_keys = ['desc', 'attackingFaction', 'attackerReward', 'defendingFaction', 'defenderReward', 
+	_invasion_keys = ['id', 'activation', 'expiry', 'desc', 'attackingFaction', 'attackerReward', 'defendingFaction', 'defenderReward', 
 					'nodeKey', 'vsInfestation', 'completion']
 
 	def __init__(self, invasion_dict):
@@ -60,6 +69,9 @@ class Invasion:
 		for key in self._invasion_keys:
 			if key not in invasion_dict.keys():
 				raise DictKeyError('Invasion', key)
+		self.id = invasion_dict['id']
+		self.activation = invasion_dict['activation']
+		self.expiry = invasion_dict['expiry']
 		self.desc = invasion_dict['desc']
 		self.attackingFaction = invasion_dict['attackingFaction']
 		self.attackerReward = self.Reward(invasion_dict['attackerReward'])
@@ -104,7 +116,7 @@ class Invasion:
 			return _reward_keys
 
 class CetusInfo:
-	_cetus_keys = ['id', 'activation', 'isDay','expiry', 
+	_cetus_keys = ['id', 'activation', 'expiry', 'isDay',
 				   'state', 'timeLeft', 'isCetus', 'shortString']
 
 	def __init__(self, cetus_dict):
@@ -114,13 +126,15 @@ class CetusInfo:
 			if key not in cetus_dict.keys():
 				raise DictKeyError('CetusInfo', key)
 		self.id = cetus_dict['id']
-		self.activation = cetus_dict['activation']
-		self.shortString = cetus_dict['shortString']
 		self.expiry = cetus_dict['expiry']
+		self.activation = cetus_dict['activation']
 		self.isDay = cetus_dict['isDay']
 		self.state = cetus_dict['state']
 		self.timeLeft = cetus_dict['timeLeft']
 		self.isCetus = cetus_dict['isCetus']
+		self.shortString = cetus_dict['shortString']
+
+		#Additions to API
 		self.wikiaUrl = "https://warframe.fandom.com/wiki/Plains_of_Eidolon"
 
 	def to_string(self):
@@ -134,7 +148,7 @@ class CetusInfo:
 
 
 class VallisInfo:
-	_vallis_keys = ['id', 'isWarm','expiry','timeLeft']
+	_vallis_keys = ['id', 'expiry', 'timeLeft', 'isWarm']
 
 	def __init__(self, vallis_dict):
 		if not isinstance(vallis_dict, dict):
@@ -144,8 +158,8 @@ class VallisInfo:
 				raise DictKeyError('VallisInfo', key)		
 		self.id = vallis_dict['id']
 		self.expiry = vallis_dict['expiry']
-		self.isWarm = vallis_dict['isWarm']
 		self.timeLeft = vallis_dict['timeLeft']
+		self.isWarm = vallis_dict['isWarm']
 		self.wikiaUrl = "https://warframe.fandom.com/wiki/Orb_Vallis"
 
 	def to_string(self):
@@ -356,8 +370,6 @@ class SteelPath:
 		#I have no idea what the hell the incursions in the api actually do, there isn't much information there.
 		#self.incursions = [self.Incursion(incursion) for incursion in steelpath_dict['incursions']]
 
-	
-	
 	def to_string(self):
 		self_string = ""
 		for k, v in vars(self).items():

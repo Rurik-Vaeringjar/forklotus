@@ -17,12 +17,22 @@ class DictTypeError(LotusError):
 		self.message += str(type(self.dict_obj)) + ' instead.'
 
 class DictKeyError(LotusError):
-	"""Error class to be raised when an invalid dictionary key is used"""
+	'''Error class to be raised when an invalid dictionary key is used'''
 
 	def __init__(self, goal_class, key):
 		self.goal_class = goal_class
 		self.key = key
 		self.message = f"\n ↳ Was expecting \'{self.key}\' in dictionary passed to {self.goal_class} class, was not found."
+
+class ListTypeError(LotusError):
+	'''Error class to be raised when an incorrect object is passed to a class constructor.'''
+
+	def __init__(self, goal_class, list_obj):
+		self.goal_class = goal_class
+		self.dict_obj = dict_obj
+		self.message = '\n ↳ Was expecting an object of type list that matches the ' 
+		self.message += f"{self.goal_class} class, got an object of type "
+		self.message += str(type(self.list_obj)) + ' instead.'
 
 class NonPlatformError(LotusError):
 	'''Error class to be raised when an invalid platform is called in the constructor of a wf_api'''

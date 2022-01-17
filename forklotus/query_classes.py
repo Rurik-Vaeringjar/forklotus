@@ -4,7 +4,7 @@ from .felix_functions import split_location, fix_thumbnail, fix_passive, fix_abi
 
 from pprint import pprint
 
-#This is the only one that works right now
+#I was wrong, this doesn't work either.
 class RivenInfo:
 	_riven_keys = ['unrolled', 'rerolled']
 
