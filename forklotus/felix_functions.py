@@ -62,7 +62,7 @@ def fix_passive(passive: str, name: str) -> str:
 		passive = passive.replace("|ENERGY|", "10")
 	elif name.startswith("Loki"):
 		passive = passive.replace("|MULT|", "10")
-		passive = passive.replace("." ", up to 60 seconds.")
+		passive = passive.replace(".", ", up to 60 seconds.")
 	elif name.startswith("Mesa"):
 		passive = passive.replace("|SPEED|", "15")
 		passive = passive.replace("|RELOAD|", "25")
