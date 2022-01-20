@@ -70,7 +70,7 @@ class Invasion:
 				raise DictKeyError('Invasion', key)
 		self.id = invasion_dict['id']
 		self.activation = invasion_dict['activation']
-		self.expiry = invasion_dict['expiry'] if 'expiry' in invasion_dict.keys() else None
+		#self.expiry = invasion_dict['expiry'] if 'expiry' in invasion_dict.keys() else None
 		self.desc = invasion_dict['desc']
 		self.attackingFaction = invasion_dict['attackingFaction']
 		self.attackerReward = self.Reward(invasion_dict['attackerReward'])
