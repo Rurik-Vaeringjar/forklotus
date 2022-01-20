@@ -59,7 +59,7 @@ class Fissure:
 		return _fissure_keys
 
 class Invasion:
-	_invasion_keys = ['id', 'activation', 'expiry', 'desc', 'attackingFaction', 'attackerReward', 'defendingFaction', 'defenderReward', 
+	_invasion_keys = ['id', 'activation', 'desc', 'attackingFaction', 'attackerReward', 'defendingFaction', 'defenderReward', 
 					'nodeKey', 'vsInfestation', 'completion']
 
 	def __init__(self, invasion_dict):
@@ -70,7 +70,7 @@ class Invasion:
 				raise DictKeyError('Invasion', key)
 		self.id = invasion_dict['id']
 		self.activation = invasion_dict['activation']
-		self.expiry = invasion_dict['expiry']
+		self.expiry = invasion_dict['expiry'] if 'expiry' in invasion_dict.keys() else None
 		self.desc = invasion_dict['desc']
 		self.attackingFaction = invasion_dict['attackingFaction']
 		self.attackerReward = self.Reward(invasion_dict['attackerReward'])
@@ -312,6 +312,8 @@ class Sortie:
 	def choose_thumbnail(self, boss: str) -> str:
 		if boss == "Councilor Vay Hek":
 			return "https://static.wikia.nocookie.net/warframe/images/8/82/VayHekPortrait.png"
+		if boss == "Raptor":
+			return "https://static.wikia.nocookie.net/warframe/images/0/08/Raptor.png"
 		return "https://static.wikia.nocookie.net/warframe/images/1/15/Sortie_b.png"
 
 	def to_string(self):
