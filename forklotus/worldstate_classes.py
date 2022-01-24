@@ -2,7 +2,7 @@
 
 from .exceptions import *
 
-from .felix_functions import split_location
+from .felix_functions import split_location, time_remaining
 
 class Fissures:
 	def __init__(self, fissure_list):
@@ -172,7 +172,7 @@ class VallisInfo:
 
 
 class DeimosInfo:
-	_deimos_keys = ["id", "expiry", "activation", "active"]
+	_deimos_keys = ['id', 'expiry', 'activation', 'active', 'timeLeft']
 
 	def __init__(self, deimos_dict):
 		if not isinstance(deimos_dict, dict):
@@ -180,10 +180,11 @@ class DeimosInfo:
 		for key in self._deimos_keys:
 			if key not in deimos_dict.keys():
 				raise DictKeyError("DeimosInfo", key)
-		self.id = deimos_dict["id"]
-		self.expiry = deimos_dict["expiry"]
-		self.activation = deimos_dict["activation"]
-		self.active = deimos_dict["active"]
+		self.id = deimos_dict['id']
+		self.expiry = deimos_dict['expiry']
+		self.activation = deimos_dict['activation']
+		self.active = deimos_dict['active']
+		self.timeLeft = deimos_dict['timeLeft']
 		self.isFass = True if self.active == "fass" else False
 		self.wikiaUrl = "https://warframe.fandom.com/wiki/Cambion_Drift"
 
@@ -400,6 +401,27 @@ class SteelPath:
 
 		def get_expected_keys(self):
 			return _reward_keys
+
+class Arbitration:
+	_arbi_keys = ['activation', 'expiry', 'node', 'enemy', 'type', 'archwing', 'sharkwing']
+
+	def __init__(self, arbi_dict):
+		if not isinstance(arbi_dict, dict):
+			raise DictTypeError('Arbitration', arbi_dict)
+		for key in self._arbi_keys:
+			if key not in arbi_dict.keys():
+				raise DictKeyError('Arbitration', key)
+		self.activation = arbi_dict['activation']
+		self.expiry = arbi_dict['expiry']
+		self.location = arbi_dict['node']
+		self.node, self.planet = split_location(self.location)
+		self.enemy = arbi_dict['enemy']
+		self.type = arbi_dict['type']
+		self.archwing = arbi_dict['archwing']
+		self.sharkwing = arbi_dict['sharkwing']
+		self.timeLeft = time_remaining(self.expiry)
+		self.wikiaUrl = "https://warframe.fandom.com/wiki/Arbitrations"
+		self.wikiaThumbnail = "https://static.wikia.nocookie.net/warframe/images/8/86/VitusEmblem.png"
 
 	#WARNING: Untested!
 #	class Incursion:

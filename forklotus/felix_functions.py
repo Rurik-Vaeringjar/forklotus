@@ -1,3 +1,6 @@
+from datetime import datetime, timezone, timedelta
+
+#Useful functions
 def split_location(loc: str):
 	if " (" in loc and ")" in loc:
 		part = loc.partition(" (")
@@ -11,6 +14,54 @@ def split_location(loc: str):
 
 	return node, planet
 
+def time_remaining(timestr: str) -> str:
+	expiry = get_datetime(timestr)
+	now = datetime.now(tz=timezone.utc)
+	delta = expiry - now
+	return convert_time(delta.seconds)
+
+def get_datetime(timestr: str):
+	part = timestr.partition("-")
+	year = int(part[0])
+	part = part[2].partition("-")
+	month = int(part[0])
+	part = part[2].partition("T")
+	day = int(part[0])
+	part = part[2].partition(":")
+	hour = int(part[0])
+	part = part[2].partition(":")
+	minute = int(part[0])
+	part = part[2].partition(".")
+	second = int(part[0])
+	
+	dt = datetime(	year=year,
+					month=month,
+					day=day,
+					hour=hour,
+					minute=minute,
+					second=second,
+					tzinfo=timezone.utc)
+	return dt
+
+def convert_time(seconds):
+	hours = 0
+	minutes = 0
+	while seconds >= 3600:
+		hours += 1
+		seconds -= 3600
+	while seconds >= 60:
+		minutes +=1
+		seconds -= 60
+
+	if hours > 0:
+		timestr = f"{hours}h {minutes}m "
+	elif minutes > 0:
+		timestr = f"{minutes}m "
+	timestr += f"{int(seconds)}s"
+	
+	return timestr
+
+#Direct changes
 def fix_thumbnail(name: str) -> str:
 	if name == "Equinox":
 		return "https://static.wikia.nocookie.net/warframe/images/e/ee/EquinoxSolo.png"

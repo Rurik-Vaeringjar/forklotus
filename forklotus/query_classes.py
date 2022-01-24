@@ -1,6 +1,6 @@
 # forklotus/query_classes.py
 from .exceptions import *
-from .felix_functions import split_location, fix_thumbnail, fix_passive, fix_ability
+from .felix_functions import split_location, time_remaining, fix_thumbnail, fix_passive, fix_ability
 
 from pprint import pprint
 

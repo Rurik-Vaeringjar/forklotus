@@ -32,6 +32,13 @@ class wf_api(object):
 			raise StatusCodeError(response.status_code, 'get_alert_info')
 		return response.json()
 
+	def get_arbitration_info(self):
+		path = '{server}/{platform}/arbitration'.format(server=self.server, platform=self.platform)
+		response = session.get(path)
+		if response.status_code != 200:
+			raise StatusCodeError(response.status_code, 'get_arbitration_info')
+		return response.json()
+
 	def get_cetus_info(self):
 		path = '{server}/{platform}/cetusCycle'.format(server=self.server, platform=self.platform)
 		response = session.get(path)
