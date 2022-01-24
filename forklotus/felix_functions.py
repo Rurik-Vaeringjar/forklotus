@@ -53,10 +53,11 @@ def convert_time(seconds):
 		minutes +=1
 		seconds -= 60
 
+	timestr = ""
 	if hours > 0:
 		timestr = f"{hours}h "
 	if minutes > 0:
-		timestr = f"{minutes}m "
+		timestr += f"{minutes}m "
 	timestr += f"{int(seconds)}s"
 	
 	return timestr
