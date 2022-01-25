@@ -4,7 +4,7 @@ from .felix_functions import split_location, time_remaining, fix_thumbnail, fix_
 
 from pprint import pprint
 
-#I was wrong, this doesn't work either.
+#Another work in progress, the way the information comes in makes it difficult to easily format.
 class RivenInfo:
 	_riven_keys = ['unrolled', 'rerolled']
 
@@ -92,9 +92,6 @@ class WarframeInfo:
 				
 			self.name = ability_dict['name']
 			self.description = fix_ability(ability_dict['description'], self.name)
-
-
-
 
 #WORK IN PROGRESS: Abandon all hope ye who enter here.
 #This nonsense doesn't work because the weapon information is a tangled web of madness, or I'm just very dumb...

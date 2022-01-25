@@ -14,21 +14,16 @@ class Fissures:
 		self.wikiaThumbnail = "https://static.wikia.nocookie.net/warframe/images/5/57/VoidTearIcon_b.png"
 		self.wikiaUrl = "https://warframe.fandom.com/wiki/Void_Fissure"
 
+		def sort_by_tierNum(fissure):
+			return fissure.tierNum
+		self.list.sort(key=sort_by_tierNum)
+
 class Fissure:
 	_fissure_keys = ['id', 'activation', 'startString',
 					 'expiry', 'active', 'node', 'missionType',
 					 'enemy', 'tier', 'tierNum', 'expired',
 					 'eta', 'isStorm']
 	
-	#Unused with recent API change (addition of isStorm bool), kept for reference.
-	"""_void_storms = [["Sover Strait (Earth)", "Iota Temple (Earth)", "Ogal Cluster (Earth)", "Korm's Belt (Earth)", "Bendar Cluster (Earth)", 
-				"Beacon Shield Ring (Venus)", "Vesper Strait (Venus)", "Luckless Expanse (Venus)", "Falling Glory (Venus)", "Bifrost Echo (Venus)", "Orvin-Haarc (Venus)"],
-				["Mordo Cluster (Saturn)", "Lupal Pass (Saturn)", "Nodo Gap (Saturn)", "Vand Cluster (Saturn)", "Kasio's Rest (Saturn)"],
-				["Arva Vector (Neptune)", "Nu-Gua Mines (Neptune)", "Mammon's Prospect (Neptune)", "Brom Cluster (Neptune)", "Enkidu Ice Drifts (Neptune)", "Sovereign Grasp (Neptune)"],
-				["Khufu Envoy (Pluto)", "Obol Crossing (Pluto)", "Profit Margin (Pluto)", "Peregrine Axis (Pluto)", "Seven Sirens (Pluto)", "Fenton's Field (Pluto)", 
-				"Calabash (Veil)", "Numina (Veil)", "Arc Silver (Veil)", "Erato (Veil)", "Lu-Yan (Veil)", "Sabmir Cloud (Veil)", 
-				"R-9 Cloud (Veil)", "Nsu Grid (Veil)", "H-2 Cloud (Veil)", "Flexa (Veil)"]]"""
-
 	def __init__(self, fissure_dict):
 		if not isinstance(fissure_dict, dict):
 			raise DictTypeError('Fissure', fissure_dict)
@@ -49,7 +44,7 @@ class Fissure:
 		self.expired = fissure_dict['expired']
 		self.eta = fissure_dict['eta']
 		self.isStorm = fissure_dict['isStorm']
-
+		
 	def to_string(self):
 		self_string = ''
 		for k, v in vars(self).items():
@@ -146,8 +141,6 @@ class CetusInfo:
 		self.timeLeft = cetus_dict['timeLeft']
 		self.isCetus = cetus_dict['isCetus']
 		self.shortString = cetus_dict['shortString']
-
-		#Additions to API
 		self.wikiaUrl = "https://warframe.fandom.com/wiki/Plains_of_Eidolon"
 
 	def to_string(self):
@@ -302,7 +295,6 @@ class VoidTrader:
 		def get_expected_keys(self):
 			return _trader_keys
 
-#WARNING: untested!
 class Sortie:
 	_sortie_keys = ['id', 'activation', 'expiry', 'rewardPool', 'variants', 'boss', 'faction', 'expired', 'eta']
 
@@ -329,6 +321,8 @@ class Sortie:
 			return "https://static.wikia.nocookie.net/warframe/images/8/82/VayHekPortrait.png"
 		if boss == "Raptor":
 			return "https://static.wikia.nocookie.net/warframe/images/0/08/Raptor.png"
+		if boss == "Phorid":
+			return "https://static.wikia.nocookie.net/warframe/images/a/a5/PhoridIcon.png"
 		return "https://static.wikia.nocookie.net/warframe/images/1/15/Sortie_b.png"
 
 	def to_string(self):

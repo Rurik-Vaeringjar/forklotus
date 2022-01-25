@@ -200,5 +200,4 @@ def fix_ability(ability: str, name: str) -> str:
 			name == "Transmutation Probe" or name == "Catalyze"):
 		ability = ability.replace(".H", ". H")
 	
-	
 	return ability
