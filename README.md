@@ -7,7 +7,7 @@ Going to have to go old school on this until I get this set up on pip, just down
 ```python
 from forklotus import *
 ```
-If you don't want the response classes and wish to work directly with json from the warframestats api you can specifically import
+If you don't want the response classes and wish to work directly with JSON from the Warframestats API you can specifically import
 ```python
 from forklotus import wf_api
 ```
@@ -16,7 +16,7 @@ Initialization of the API for a specific platform is the same as with PyLotus. `
 ```python
 pc_wf = wf_api('pc') #Creates an instance with your preferred platform
 ```
-You can get json formatted dict objects from the warframestats api by calling specific functions from the ```wf_api``` instance you just created.
+You can get JSON formatted dict objects from the Warframestats API by calling specific functions from the ```wf_api``` instance you just created.
 ```python
 fissures_json = pc_wf.get_current_fissures() #Gets a list of JSON response dicts
 ```
@@ -27,13 +27,13 @@ fissures = Fissures(fissures_json) #Feed it the list of JSON response dicts
 Alternatively you can do this at the same time by calling them together
 ```python
 pc_wf = wf_api('pc') #Creates an instance with your preferred platform
-fissures = Fissures(wf_api.get_current_fissures()) #Interpret fissure response json from the Warframestats API
+fissures = Fissures(wf_api.get_current_fissures()) #Interpret fissure response JSON from the Warframestats API
 ```
 You can even add error checking using the built in error classes
 ```python
 try:
   pc_wf = wf_api('pc') #Attempt to initialize the Warframestats API
-  fissures = Fissures(wf_api.get_current_fissures()) #Attempt to interpret fissure response json from Warframestats API
+  fissures = Fissures(wf_api.get_current_fissures()) #Attempt to interpret fissure response JSON from Warframestats API
 except LotusError as e:
   print(f"Warframe API Error: {e}") #Catch any errors that might occur
   #Fail successfully
@@ -55,5 +55,3 @@ for fissure in fissures.list:
 >>> Axi, Infested, Extermination, Saxis, Eris
 >>> Requiem, Grineer, Disruption, Tamu, Kuva Fortress
 ```
-
-
