@@ -3,6 +3,7 @@
 from .exceptions import *
 
 from .felix_functions import split_location, time_remaining
+import time
 
 class Fissures:
 	def __init__(self, fissure_list):
@@ -57,6 +58,19 @@ class Fissure:
 
 	def get_expected_keys(self):
 		return _fissure_keys
+
+class Invasions:
+	def __init__(self, invasion_list):
+		if not isinstance(invasion_list, list):
+			raise ListTypeError('Invasions', invasion_list)
+		self.list = [Invasion(invasion) for invasion in invasion_list]
+		self.wikiaUrl = "https://warframe.fandom.com/wiki/Invasion"
+		self.wikiaOutbreakUrl = "https://warframe.fandom.com/wiki/Invasion#Infestation_Outbreaks"
+		self.wikiaThumbnail = "https://static.wikia.nocookie.net/warframe/images/5/53/InvasionIcon_b.png"
+
+		#def sort_by_planet(inv):
+		#	return inv.planet
+		#self.list.sort(key=sort_by_planet)
 
 class Invasion:
 	_invasion_keys = ['id', 'activation', 'desc', 'attackingFaction', 'attackerReward', 'defendingFaction', 'defenderReward', 
