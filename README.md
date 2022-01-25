@@ -27,16 +27,33 @@ fissures = Fissures(fissures_json) #Feed it the list of JSON response dicts
 Alternatively you can do this at the same time by calling them together
 ```python
 pc_wf = wf_api('pc') #Creates an instance with your preferred platform
-#```
+fissures = Fissures(wf_api.get_current_fissures()) #Interpret fissure response json from the Warframestats API
+```
 You can even add error checking using the built in error classes
 ```python
 try:
   pc_wf = wf_api('pc') #Attempt to initialize the Warframestats API
-  fissures = Fissures(wf_api.get_current_fissures()) #Attempt to interpret fissure response from Warframestats API
+  fissures = Fissures(wf_api.get_current_fissures()) #Attempt to interpret fissure response json from Warframestats API
 except LotusError as e:
   print(f"Warframe API Error: {e}") #Catch any errors that might occur
+  #Fail successfully
 else:
   #Op Success
+```
+Using the resulting ```fissures``` object is straightforward.
+```python
+print(len(fissures.list)
+for fissure in fissures.list:
+  print(f"{fissure.tier}, {fissure.enemy}, {fissure.missionType}, {fissure.node}, {fissure.planet}") 
+  #Note: fissure.location can be used to get the node and planet in the combined form of "node (planet)"
+```
+```python
+>>> 5
+>>> Lith, Grineer, Rescue, Martialis, Mars
+>>> Meso, Grineer, Interception, Rhea, Saturn
+>>> Neo, Grineer, Interception, Umbriel, Uranus
+>>> Axi, Infested, Extermination, Saxis, Eris
+>>> Requiem, Grineer, Disruption, Tamu, Kuva Fortress
 ```
 
 
