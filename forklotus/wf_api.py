@@ -201,6 +201,13 @@ class wf_api(object):
 			raise StatusCodeError(response.status_code, "get_weapon_info")
 		return response.json()
 
+	def get_weapon_info_sr(self, weapon):
+		path = "{server}/weapons/{query}".format(server=self.server, query=weapon)
+		response = session.get(path)
+		if response.status_code != 200:
+			raise StatusCodeError(response.status_code, "get_weapon_info")
+		return response.json()
+
 	def get_warframe_info(self, warframe):
 		path = "{server}/warframes/search/{query}".format(server=self.server, query=warframe)
 		response = session.get(path)

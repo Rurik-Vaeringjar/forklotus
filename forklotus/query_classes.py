@@ -5,7 +5,7 @@ from .felix_functions import split_location, time_remaining, fix_thumbnail, fix_
 from pprint import pprint
 
 #Another work in progress, the way the information comes in makes it difficult to easily format.
-class RivenInfo:
+class Riven:
 	_riven_keys = ['unrolled', 'rerolled']
 
 	def __init__(self, riven_dict):
@@ -32,9 +32,15 @@ class RivenInfo:
 			self.min = rolled_dict['min']
 			self.max = rolled_dict['max']
 
+class Warframes:
+	def __init__(self, warframe_list):
+		if not isinstance(warframe_list, list):
+			raise ListTypeError("Warframes", warframe_list)
+		self.list = [Warframe(warframe) for warframe in warframe_list]
+
 # WARNING: UNSTABLE AS ALL HELL
 # This is another jacked up one, api documentation clearly isn't right for this one, going to have to do it manually.
-class WarframeInfo:
+class Warframe:
 	_warframe_keys = [	'abilities', 'armor', 'components', 'description', 'health', 
 						'imageName', 'introduced', 'masteryReq', 'name', 'passiveDescription', 'patchlogs',
 						'polarities', 'power', 'releaseDate', 'shield', 'sprint', 'sprintSpeed', 'stamina',
@@ -93,9 +99,16 @@ class WarframeInfo:
 			self.name = ability_dict['name']
 			self.description = fix_ability(ability_dict['description'], self.name)
 
+class Warframes:
+	def __init__(self, weapon_list):
+		if not isinstance(weapon_list, list):
+			raise ListTypeError("Weapons", weapon_list)
+		self.list = [Weapon(weapon) for weapon in weapon_list]
+
+
 #WORK IN PROGRESS: Abandon all hope ye who enter here.
 #This nonsense doesn't work because the weapon information is a tangled web of madness, or I'm just very dumb...
-class WeaponInfo:
+class Weapon:
 	_weapon_keys = ['name', 'description', 'type', 'tradable', 'category', 'wikiaThumbnail', 'masteryReq', 'disposition', 'attacks']
 
 	def __init__(self, weapon_dict):
@@ -109,12 +122,23 @@ class WeaponInfo:
 		self.type = weapon_dict['type']
 		self.tradable = weapon_dict['tradable']
 		self.category = weapon_dict['category']
-		self.thumbnail = weapon_dict['wikiaThumbnail']
+		self.wikiaUrl = weapon_dict['wikiaUrl']
+		self.wikiaThumbnail = weapon_dict['wikiaThumbnail']
 		self.masteryReq = weapon_dict['masteryReq']
 		self.disposition = weapon_dict['disposition']
+		self.dispositionString = self.disposition_str(self.disposition)
 
 		#weapon stats
 		self.attacks = [self.Attack(attack) for attack in weapon_dict['attacks']]
+
+	def disposition_str(disposition: int) -> str:
+		str_ = ""
+		for i in range(1,6):
+			if i <= disposition:
+				str_ += "●"
+			else:
+				str_ += "○"
+		return str_
 
 	class Attack:
 		_perm_attack_keys = ['crit_chance', 'crit_mult', 'status_chance', 'damage']		
@@ -177,7 +201,7 @@ class WeaponInfo:
 				self.count = pellet_dict['count']
 
 #Doesn't work great yet, mainly because of how many ways the syntax changes in 'place'
-class DropInfo:
+class Drop:
 	_drop_keys = ['item', 'place', 'rarity', 'chance']
 
 	def __init__(self, drop_dict):
