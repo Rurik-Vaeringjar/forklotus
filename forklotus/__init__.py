@@ -1,4 +1,4 @@
-# pylotus/__init__.py
+# forklotus/__init__.py
 
 import requests
 

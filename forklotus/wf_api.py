@@ -1,7 +1,7 @@
 # pylotus/wf_api.py
 
 from . import session
-from .exceptions import *
+from .exceptions import NonPlatformError, StatusCodeError
 
 class wf_api(object):
 	_platforms = ['pc', 'ps4', 'xb1', 'swi']

@@ -1,5 +1,5 @@
 # forklotus/query_classes.py
-from .exceptions import *
+from .exceptions import DictTypeError, DictKeyError, ListTypeError
 from .felix_functions import split_location, time_remaining, fix_thumbnail, fix_passive, fix_ability
 
 from pprint import pprint

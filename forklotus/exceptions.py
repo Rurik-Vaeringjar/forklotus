@@ -48,7 +48,10 @@ class StatusCodeError(LotusError):
 	def __init__(self, actual_code, call_name):
 		self.actual_code = actual_code
 		self.call_name = call_name
-		self.message = f"\n ↳ Warning: response object from API call {self.call_name}"
-		self.message += ' returned with a status code of ' + str(self.actual_code)
-		self.message += ', not 200. Forwarding response object anyway.'
+		if self.actual_code == 404:
+			self.message = "No result"
+		else:
+			self.message = f"\n ↳ Warning: response object from API call {self.call_name}"
+			self.message += ' returned with a status code of ' + str(self.actual_code)
+			self.message += ', not 200. Forwarding response object anyway.'
 
