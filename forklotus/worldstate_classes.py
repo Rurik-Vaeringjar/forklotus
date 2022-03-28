@@ -319,10 +319,12 @@ class Sortie:
 	def choose_thumbnail(self, boss: str) -> str:
 		if boss == "Councilor Vay Hek":
 			return "https://static.wikia.nocookie.net/warframe/images/8/82/VayHekPortrait.png"
-		if boss == "Raptor":
+		elif boss == "Raptor":
 			return "https://static.wikia.nocookie.net/warframe/images/0/08/Raptor.png"
-		if boss == "Phorid":
+		elif boss == "Phorid":
 			return "https://static.wikia.nocookie.net/warframe/images/a/a5/PhoridIcon.png"
+		elif boss == "Kela De Thaym":
+			return "https://static.wikia.nocookie.net/warframe/images/b/ba/KelaDeThaym.png"
 		return "https://static.wikia.nocookie.net/warframe/images/1/15/Sortie_b.png"
 
 	def to_string(self):
