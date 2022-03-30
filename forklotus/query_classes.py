@@ -41,7 +41,7 @@ class Warframes:
 # WARNING: UNSTABLE AS ALL HELL
 # This is another jacked up one, api documentation clearly isn't right for this one, going to have to do it manually.
 class Warframe:
-	_warframe_keys = [	'abilities', 'armor', 'components', 'description', 'health', 
+	_warframe_keys = [	'abilities', 'armor', 'description', 'health', 
 						'imageName', 'introduced', 'masteryReq', 'name', 'passiveDescription', 'patchlogs',
 						'polarities', 'power', 'releaseDate', 'shield', 'sprint', 'sprintSpeed', 'stamina',
 						'uniqueName', 'wikiaUrl']
@@ -61,7 +61,7 @@ class Warframe:
 		#self.buildTime = warframe_dict['buildTime']
 		#self.category = warframe_dict['category']
 		#self.color = warframe_dict['color']
-		self.components = warframe_dict['components']
+		self.components = warframe_dict['components'] if 'components' in warframe_dict.keys() else None
 		self.conclave = warframe_dict['conclave'] if 'conclave' in warframe_dict.keys() else None
 		self.description = warframe_dict['description']
 		self.exalted = warframe_dict['exalted'] if 'exalted' in warframe_dict.keys() else None
