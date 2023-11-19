@@ -1,230 +1,158 @@
 # pylotus/wf_api.py
 
 from . import session
-from .exceptions import NonPlatformError, StatusCodeError
+from .exceptions import NonPlatformError, NonLanguageError, StatusCodeError
 
 class wf_api(object):
 	_platforms = ['pc', 'ps4', 'xb1', 'swi']
+	_languages = ['en', 'de', 'es', 'fr', 'it']
 	server = "https://api.warframestat.us"
+	
 
 	@staticmethod
 	def get_platforms():
 		return wf_api._platforms
 
-	def __init__(self, platform):
+	def __init__(self, platform, language='en'):
 		if platform not in self._platforms:
 			raise NonPlatformError(platform)
 		self.platform = platform
 
+		if language not in self._languages:
+			raise NonLanguageError(language)
+		self.language = language
+
 
 	########################################################################################################################################################## WORLDSTATE INFO
 	def get_all_worldstate_info(self):
-		path = "{server}/{platform}".format(server=self.server, platform=self.platform)
-		response = session.get(path)
+		path = "{server}/{platform}/?language={language}".format(server=self.server, platform=self.platform, language=self.language)
+		response = session.get(path, timeout=3.0)
 		if response.status_code != 200:
 			raise StatusCodeError(response.status_code, 'get_all_worldstate_info')
 		return response.json()
-
+	
+	def get_worldstate_info(self, info):
+		path = '{server}/{platform}/{info}/?language={language}'.format(server=self.server, platform=self.platform, info=info, language=self.language)
+		response = session.get(path, timeout=1.0)
+		if response.status_code != 200:
+			raise StatusCodeError(response.status_code, f"get_worldstate_info({info})")
+		return response.json()
+	
 	def get_alert_info(self):
-		path = '{server}/{platform}/alerts'.format(server=self.server, platform=self.platform)
-		response = session.get(path)
-		if response.status_code != 200:
-			raise StatusCodeError(response.status_code, 'get_alert_info')
-		return response.json()
-
+		return self.get_worldstate_info("alerts")
+		
 	def get_arbitration_info(self):
-		path = '{server}/{platform}/arbitration'.format(server=self.server, platform=self.platform)
-		response = session.get(path)
-		if response.status_code != 200:
-			raise StatusCodeError(response.status_code, 'get_arbitration_info')
-		return response.json()
+		return self.get_worldstate_info("arbitration")
 
 	def get_cetus_info(self):
-		path = '{server}/{platform}/cetusCycle'.format(server=self.server, platform=self.platform)
-		response = session.get(path)
-		if response.status_code != 200:
-			raise StatusCodeError(response.status_code, 'get_cetus_info')
-		return response.json()
-
+		return self.get_worldstate_info("cetusCycle")
+		
 	def get_vallis_info(self):
-		path = '{server}/{platform}/vallisCycle'.format(server=self.server, platform=self.platform)
-		response = session.get(path)
-		if response.status_code != 200:
-			raise StatusCodeError(response.status_code, 'get_vallis_info')
-		return response.json()
+		return self.get_worldstate_info("vallisCycle")
 
 	def get_deimos_info(self):
-		path = "{server}/{platform}/cambionCycle".format(server=self.server, platform=self.platform)
-		response = session.get(path)
-		if response.status_code != 200:
-			raise StatusCodeError(response.status_code, 'get_deimos_info')
-		return response.json()
+		return self.get_worldstate_info("cambionCycle")
 
 	def get_conclave_challenge_info(self):
-		path = '{server}/{platform}/conclaveChallenges'.format(server=self.server, platform=self.platform)
-		response = session.get(path)
-		if response.status_code != 200:
-			raise StatusCodeError(response.status_code, 'get_conclave_challenge_info')
-		return response.json()
+		return self.get_worldstate_info("conclaveChallenges")
 
 	def get_construction_progress_info(self):
-		path = '{server}/{platform}/constructionProgress'.format(server=self.server, platform=self.platform)
-		response = session.get(path)
-		if response.status_code != 200:
-			raise StatusCodeError(response.status_code, 'get_construction_progress_info')
-		return response.json()
+		return self.get_worldstate_info("constructionProgress")
 
 	def get_daily_deals_info(self):
-		path = '{server}/{platform}/dailyDeals'.format(server=self.server, platform=self.platform)
-		response = session.get(path)
-		if response.status_code != 200:
-			raise StatusCodeError(response.status_code, 'get_daily_deals_info')
-		return response.json()
+		return self.get_worldstate_info("dailyDeals")
 
 	def get_event_info(self):
-		path = '{server}/{platform}/events'.format(server=self.server, platform=self.platform)
-		response = session.get(path)
-		if response.status_code != 200:
-			raise StatusCodeError(response.status_code, 'get_event_info')
-		return response.json()
-
+		return self.get_worldstate_info("events")
+	
 	def get_fissure_info(self):
-		path = '{server}/{platform}/fissures'.format(server=self.server, platform=self.platform)
-		response = session.get(path)
-		if response.status_code != 200:
-			raise StatusCodeError(response.status_code, 'get_fissure_info')
-		return response.json()
-
+		return self.get_worldstate_info("fissures")
+	
 	def get_flash_sale_info(self):
-		path = '{server}/{platform}/flashSales'.format(server=self.server, platform=self.platform)
-		response = session.get(path)
-		if response.status_code != 200:
-			raise StatusCodeError(response.status_code, 'get_flash_sale_info')
-		return response.json()
-
+		return self.get_worldstate_info("flashSales")
+	
 	def get_invasion_info(self):
-		path = '{server}/{platform}/invasions'.format(server=self.server, platform=self.platform)
-		response = session.get(path)
-		if response.status_code != 200:
-			raise StatusCodeError(response.status_code, 'get_invasion_info')
-		return response.json()
-
+		self.get_worldstate_info("invasions")
+	
 	def get_news_info(self):
-		path = '{server}/{platform}/news'.format(server=self.server, platform=self.platform)
-		response = session.get(path)
-		if response.status_code != 200:
-			raise StatusCodeError(response.status_code, 'get_news_info')
-		return response.json()
+		return self.get_worldstate_info("news")
 
 	def get_nightwave_info(self):
-		path = '{server}/{platform}/nightwave'.format(server=self.server, platform=self.platform)
-		response = session.get(path)
-		if response.status_code != 200:
-			raise StatusCodeError(response.status_code, 'get_nightwave_info')
-		return response.json()
+		return self.get_worldstate_info("nightwave")
 
 	def get_persistent_enemy_info(self):
-		path = '{server}/{platform}/persistentEnemies'.format(server=self.server, platform=self.platform)
-		response = session.get(path)
-		if response.status_code != 200:
-			raise StatusCodeError(response.status_code, 'get_persistent_enemy_info')
-		return response.json()
+		return self.get_worldstate_info("persistentEnemies")
 
 	def get_sentient_outpost_info(self):
-		path = '{server}/{platform}/sentientOutposts'.format(server=self.server, platform=self.platform)
-		response = session.get(path)
-		if response.status_code != 200:
-			raise StatusCodeError(response.status_code, 'get_sentient_outpost_info')
-		return response.json()
+		return self.get_worldstate_info("sentientOutposts")
 
 	def get_sanctuary_status_info(self):
-		path = '{server}/{platform}/simaris'.format(server=self.server, platform=self.platform)
-		response = session.get(path)
-		if response.status_code != 200:
-			raise StatusCodeError(response.status_code, 'get_sanctuary_status_info')
-		return response.json()
+		return self.get_worldstate_info("simaris")
 
 	def get_sortie_info(self):
-		path = '{server}/{platform}/sortie'.format(server=self.server, platform=self.platform)
-		response = session.get(path)
-		if response.status_code != 200:
-			raise StatusCodeError(response.status_code, 'get_sortie_info')
-		return response.json()
-
+		return self.get_worldstate_info("sortie")
+	
+	def get_archon_hunt_info(self):
+		return self.get_worldstate_info("archonHunt")
+	
 	def get_syndicate_info(self):
-		path = '{server}/{platform}/syndicateMissions'.format(server=self.server, platform=self.platform)
-		response = session.get(path)
-		if response.status_code != 200:
-			raise StatusCodeError(response.status_code, 'get_syndicate_info')
-		return response.json()
-
+		return self.get_worldstate_info("syndicateMissions")
+	
 	def get_timestamp_info(self):
-		path = '{server}/{platform}/timestamp'.format(server=self.server, platform=self.platform)
-		response = session.get(path)
-		if response.status_code != 200:
-			raise StatusCodeError(response.status_code, 'get_timestamp_info')
-		return response.json()
-
+		return self.get_worldstate_info("timestamp")
+		
 	def get_void_trader_info(self):
-		path = "{server}/{platform}/voidTrader".format(server=self.server, platform=self.platform)
-		response = session.get(path)
-		if response.status_code != 200:
-			raise StatusCodeError(response.status_code, 'get_void_trader_info')
-		return response.json()
+		return self.get_worldstate_info("voidTrader")
 
 	def get_steelpath_info(self):
-		path = "{server}/{platform}/steelPath".format(server=self.server, platform=self.platform)
-		response = session.get(path)
-		if response.status_code != 200:
-			raise StatusCodeError(response.status_code, 'get_steelpath_info')
-		return response.json()
+		return self.get_worldstate_info("steelPath")
 
 	########################################################################################################################################################## SEARCHABLE INFO
 	def get_riven_info(self):
-		path = '{server}/{platform}/rivens'.format(server=self.server, platform=self.platform)
-		response = session.get(path)
+		path = '{server}/{platform}/rivens/?language={language}'.format(server=self.server, platform=self.platform, language=self.language)
+		response = session.get(path, timeout=3.0)
 		if response.status_code != 200:
 			raise StatusCodeError(response.status_code, 'get_riven_info')
 		return response.json()
 
 	def get_specific_riven_info(self, weaponName):
-		path = '{server}/{platform}/rivens/search/{query}'.format(server=self.server, platform=self.platform, query=weaponName)
-		response = session.get(path)
+		path = '{server}/{platform}/rivens/search/{query}?language={language}'.format(server=self.server, platform=self.platform, query=weaponName, language=self.language)
+		response = session.get(path, timeout=3.0)
 		if response.status_code != 200:
 			raise StatusCodeError(response.status_code, 'get_specific_riven_info')
 		return response.json()
 
 	def get_weapon_info(self, weapon):
-		path = "{server}/weapons/search/{query}".format(server=self.server, query=weapon)
-		response = session.get(path)
+		path = "{server}/weapons/search/{query}?language={language}".format(server=self.server, query=weapon, language=self.language)
+		response = session.get(path, timeout=3.0)
 		if response.status_code != 200:
 			raise StatusCodeError(response.status_code, "get_weapon_info")
 		return response.json()
 
 	def get_weapon_info_sr(self, weapon):
-		path = "{server}/weapons/{query}".format(server=self.server, query=weapon)
-		response = session.get(path)
+		path = "{server}/weapons/{query}?language={language}".format(server=self.server, query=weapon, language=self.language)
+		response = session.get(path, timeout=3.0)
 		if response.status_code != 200:
 			raise StatusCodeError(response.status_code, "get_weapon_info")
 		return response.json()
 
 	def get_warframe_info(self, warframe):
-		path = "{server}/warframes/search/{query}".format(server=self.server, query=warframe)
-		response = session.get(path)
+		path = "{server}/warframes/search/{query}?language={language}".format(server=self.server, query=warframe, language=self.language)
+		response = session.get(path, timeout=3.0)
 		if response.status_code != 200:
 			raise StatusCodeError(response.status_code, "get_warframe_info")
 		return response.json()
 
 	def get_warframe_info_sr(self, warframe):
-		path = "{server}/warframes/{query}".format(server=self.server, query=warframe)
-		response = session.get(path)
+		path = "{server}/warframes/{query}?language={language}".format(server=self.server, query=warframe, language=self.language)
+		response = session.get(path, timeout=3.0)
 		if response.status_code != 200:
 			raise StatusCodeError(response.status_code, "get_warframe_info_sr")
 		return response.json()
 
 	def get_drop_info(self, item):
-		path = "{server}/drops/search/{query}".format(server=self.server, query=item)
-		response = session.get(path)
+		path = "{server}/drops/search/{query}?language={language}".format(server=self.server, query=item, language=self.language)
+		response = session.get(path, timeout=3.0)
 		if response.status_code != 200:
 			raise StatusCodeError(response.status_code, "get_drop_info")
 		return response.json()

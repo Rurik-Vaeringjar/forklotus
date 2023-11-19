@@ -42,6 +42,14 @@ class NonPlatformError(LotusError):
 		self.message = f"\n ↳ {self.fake_platform} is not a valid platform. "
 		self.message += 'Pass \'pc\', \'ps4\', \'xb1\', or \'swi\'.'
 
+class NonLanguageError(LotusError):
+	'''Error class to be raised when an invalid language is called in the constructor of a wf_api'''
+
+	def __init__(self, fake_language):
+		self.fake_platform = fake_language
+		self.message = f"\n ↳ {self.fake_language} is not a valid language. "
+		self.message += 'Pass \'en\', \'de\', \'es\', or \'fr\'.'
+
 class StatusCodeError(LotusError):
 	'''Error class to be raised when a response object does not have a 200 status code.'''
 
